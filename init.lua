@@ -1,8 +1,11 @@
 dofile_once("data/scripts/lib/utilities.lua") -- Noita's internal utilities
 
-local TRANSLATIONS_FILE = "data/translations/common.csv"
-local translations = ModTextFileGetContent(TRANSLATIONS_FILE) .. ModTextFileGetContent("data/rainbow-scipio/translations.csv")
-ModTextFileSetContent(TRANSLATIONS_FILE, translations)
+function OnModInit()
+	local player_name = ModSettingGet("scipio-sprite-mod-rainbow-version.player_name")
+	local translations = ModTextFileGetContent("data/translations/common.csv")
+	translations = translations .. [["animal_player","]] .. player_name .. [[",,,,,,,,,,,,,]]
+	ModTextFileSetContent("data/translations/common.csv", translations)
+end
 
 local function get_player()
 	return EntityGetWithTag("player_unit")[1]
@@ -33,7 +36,7 @@ function OnWorldPostUpdate()
 		local red_arm_comp = EntityGetFirstComponent(arm_id, "SpriteComponent", "arm_red")
 		local green_arm_comp = EntityGetFirstComponent(arm_id, "SpriteComponent", "arm_green")
 		local blue_arm_comp = EntityGetFirstComponent(arm_id, "SpriteComponent", "arm_blue")
-		local r1 = rand(0, 1)
+		local r1 = rand(0, .75)
 		local r2 = rand(0, 1 - r1)
 		local r3 = 1 - r1 - r2
 		local array = {r1, r2, r3}
